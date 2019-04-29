@@ -1,12 +1,16 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
+import { getField } from './fields';
 
 class Table extends React.Component {
   static propTypes = {
     config: PropTypes.objectOf(() => (true)).isRequired,
     data: PropTypes.arrayOf(() => (true)).isRequired,
+    onFieldChange: PropTypes.func.isRequired,
   }
+
+  static editTempKey = '_editing';
 
   getTableHead() {
     const { config: { fields } } = this.props;
@@ -32,16 +36,36 @@ class Table extends React.Component {
   getTableItem(data) {
     const { config: { fields, actions } } = this.props;
     const { id } = data;
+    const baseKey = `data-${id}`;
     return (
       <tr key={id}>
         {fields.map(({ key }) => (
-          <td key={`data-${id}-${key}`}>{data[key]}</td>
+          <td key={`${baseKey}-${key}`}>{this.getTableItemCell(data, key)}</td>
         ))}
         <td>
-          {actions.map(({ name, handler }) => (<button type="button" onClick={handler}>{name}</button>))}
+          {actions
+            .filter(action => !(typeof action.visible === 'function') || action.visible(data))
+            .map(({ name, handler }) => (
+              <button type="button" onClick={() => handler(data)} key={`${baseKey}-${name}`}>{name}</button>
+            ))
+          }
         </td>
       </tr>
     );
+  }
+
+  getTableItemCell(data, key) {
+    if (data[Table.editTempKey]) {
+      const Component = getField('text');
+      const { onFieldChange } = this.props;
+      return (
+        <Component
+          value={data[Table.editTempKey][key]}
+          onChange={({ target: { value } }) => onFieldChange(data, key, value)}
+        />
+      );
+    }
+    return data[key];
   }
 
   render() {
