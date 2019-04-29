@@ -72,7 +72,7 @@ class Table extends React.Component {
           onClick={this.handleSave}
           value={id}
           key={`${baseKey}-save`}
-          disabled={editingUpdated[id] !== false}
+          disabled={editingUpdated[id] === false}
         >
           Save
         </button>,
@@ -95,7 +95,7 @@ class Table extends React.Component {
 
   getTableItemCell(data, key) {
     const { id } = data;
-    const { editingData } = this.state;
+    const { editingData, editingUpdated } = this.state;
     if (editingData[id]) {
       const Component = getField('text');
       return (
@@ -103,6 +103,10 @@ class Table extends React.Component {
           value={editingData[id][key]}
           name={key}
           onChange={({ target: { value, name } }) => this.setState({
+            editingUpdated: {
+              ...editingUpdated,
+              [id]: true,
+            },
             editingData: {
               ...editingData,
               [id]: {
