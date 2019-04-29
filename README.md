@@ -29,11 +29,11 @@ Open the file `dist/index.html` in your browser
 
 ## Features
 
-* [ ] generic table
-* [ ] text fields
+* [X] generic table
+* [X] text fields
 * [ ] number fields
 * [ ] textarea fields
-* [ ] inline editable fields
+* [X] inline editable fields
 * [ ] sorable fields
 * [ ] styles
 

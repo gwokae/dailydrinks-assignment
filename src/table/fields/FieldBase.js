@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 class FieldBase extends React.Component {
   static propTypes = {
     value: PropTypes.string,
+    name: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
   };
 
@@ -13,8 +14,8 @@ class FieldBase extends React.Component {
   };
 
   render() {
-    const { value, onChange } = this.props;
-    return (<input type="text" value={value} onChange={onChange} />);
+    const { value, name, onChange } = this.props;
+    return (<input type="text" value={value} name={name} onChange={onChange} />);
   }
 }
 
