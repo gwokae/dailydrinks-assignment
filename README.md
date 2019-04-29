@@ -1,6 +1,7 @@
-# empty-project-babel-react-sass
 
-Empty project.
+# dailydrinks-assignment
+
+A simple react based table
 
 ## Building and running on localhost
 
@@ -26,7 +27,21 @@ npm run build-prod
 
 Open the file `dist/index.html` in your browser
 
-## Credits
+## Features
+
+* [ ] generic table
+* [ ] text fields
+* [ ] number fields
+* [ ] textarea fields
+* [ ] inline editable fields
+* [ ] sorable fields
+* [ ] styles
+
+## Author
+
+[Leonard Lin](mailto:gwokae@gmail.com)
+
+## Template Credits
 
 Created with [createapp.dev - an online tool for creating webpack and parcel projects](https://createapp.dev/)
 
