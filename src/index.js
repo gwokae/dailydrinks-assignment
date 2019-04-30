@@ -15,9 +15,9 @@ const initData = [
 ];
 
 const initSchema = [
-  { key: 'name', type: 'text' },
-  { key: 'price', type: 'number' },
-  { key: 'notes', type: 'textarea' },
+  { key: 'name', label: 'Name', type: 'text' },
+  { key: 'price', label: 'Price', type: 'number' },
+  { key: 'notes', label: 'Notes', type: 'textarea' },
 ];
 
 const App = () => {
@@ -27,6 +27,7 @@ const App = () => {
   return (
     <>
       <h1>dailydrinks-assignment</h1>
+      <h2>Orders:</h2>
       <button
         type="button"
         disabled={isAddingItem}
@@ -34,7 +35,6 @@ const App = () => {
       >
         Add order
       </button>
-      <h2>Orders:</h2>
       <Table
         schema={schema}
         data={tableData}
