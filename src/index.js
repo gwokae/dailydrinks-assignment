@@ -31,7 +31,8 @@ const App = () => {
       <Table
         schema={schema}
         data={tableData}
-        updateData={(data) => {
+        deleteItem={id => setTableData(tableData.filter(item => item.id !== id))}
+        updateItem={(data) => {
           const { id } = data;
           setTableData(tableData.map((item) => {
             if (item.id === id) {

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { getField } from './fields';
 
-const Table = ({ data, schema, updateData }) => {
+const Table = ({ data, schema, updateItem, deleteItem }) => {
   const [editingData, setEditingData] = useState({});
   const [editingUpdated, setEditingUpdated] = useState({});
 
@@ -17,8 +17,12 @@ const Table = ({ data, schema, updateData }) => {
     setEditingData(newEditingData);
   };
 
+  const handleDelete = ({ target: { value } }) => {
+    deleteItem(value);
+  };
+
   const handleSave = ({ target: { value } }) => {
-    updateData(editingData[value]);
+    updateItem(editingData[value]);
     handleEditDone(value);
   };
 
@@ -65,7 +69,7 @@ const Table = ({ data, schema, updateData }) => {
     } else {
       actions.push(<button type="button" onClick={handleEdit} value={id} key={`${baseKey}-edit`}>Edit</button>);
     }
-    // actions.push(<button type="button" onClick={} key={`${baseKey}-delete`}>Delete</button>);
+    actions.push(<button type="button" onClick={handleDelete} value={id} key={`${baseKey}-delete`}>Delete</button>);
 
     return actions;
   };
@@ -141,7 +145,8 @@ const Table = ({ data, schema, updateData }) => {
 Table.propTypes = {
   schema: PropTypes.arrayOf(() => (true)).isRequired,
   data: PropTypes.arrayOf(() => (true)).isRequired,
-  updateData: PropTypes.func.isRequired,
+  updateItem: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired,
 };
 
 export default Table;
