@@ -159,8 +159,8 @@ const Table = (props) => {
       const item = editingData[addingRowEditId];
       return (
         <tr key={baseKey}>
-          {schema.map(({ key }) => (
-            <td key={`${baseKey}-${key}`}>{getCell(item, key)}</td>
+          {schema.map(schemaItem => (
+            <td key={`${baseKey}-${schemaItem.key}`}>{getCell(schemaItem, item)}</td>
           ))}
           <td>
             <button

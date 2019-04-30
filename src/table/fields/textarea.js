@@ -22,10 +22,9 @@ const Textarea = (props) => {
       name={name}
       onChange={onChange}
       data-id={id}
+      value={value}
       {...atributes}
-    >
-      {value}
-    </textarea>
+    />
   );
 };
 
