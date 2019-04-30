@@ -23,10 +23,17 @@ const initSchema = [
 const App = () => {
   const [tableData, setTableData] = useState(initData);
   const [schema] = useState(initSchema);
+  const [isAddingItem, setIsAddingItem] = useState(false);
   return (
     <>
       <h1>dailydrinks-assignment</h1>
-      <button type="button">Add order</button>
+      <button
+        type="button"
+        disabled={isAddingItem}
+        onClick={() => setIsAddingItem(true)}
+      >
+        Add order
+      </button>
       <h2>Orders:</h2>
       <Table
         schema={schema}
@@ -40,6 +47,11 @@ const App = () => {
             }
             return { ...item };
           }));
+        }}
+        isAddingItem={isAddingItem}
+        addItem={(item) => {
+          setIsAddingItem(false);
+          if (item) setTableData([{ ...item, id: uuid() }, ...tableData]);
         }}
       />
     </>

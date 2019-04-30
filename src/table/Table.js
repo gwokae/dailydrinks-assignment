@@ -3,7 +3,16 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { getField } from './fields';
 
-const Table = ({ data, schema, updateItem, deleteItem }) => {
+const Table = (props) => {
+  const {
+    data,
+    schema,
+    updateItem,
+    deleteItem,
+    isAddingItem,
+    addItem,
+  } = props;
+
   const [editingData, setEditingData] = useState({});
   const [editingUpdated, setEditingUpdated] = useState({});
 
@@ -119,6 +128,59 @@ const Table = ({ data, schema, updateItem, deleteItem }) => {
     );
   };
 
+  const addingRowEditId = '__NEW_ROW__';
+  if (isAddingItem && !editingData[addingRowEditId]) {
+    setEditingData({
+      ...editingData,
+      [addingRowEditId]: schema.reduce((result, { key, defaults = '' }) => {
+        Object.assign(result, { [key]: defaults });
+        return result;
+      }, { id: addingRowEditId }),
+    });
+    setEditingUpdated({
+      ...editingUpdated,
+      [addingRowEditId]: false,
+    });
+  }
+
+  const getAddingRow = () => {
+    if (editingData[addingRowEditId]) {
+      const baseKey = 'data-new-row';
+      const item = editingData[addingRowEditId];
+      return (
+        <tr key={baseKey}>
+          {schema.map(({ key }) => (
+            <td key={`${baseKey}-${key}`}>{getCell(item, key)}</td>
+          ))}
+          <td>
+            <button
+              type="button"
+              onClick={() => {
+                addItem(item);
+                handleEditDone(addingRowEditId);
+              }}
+              key={`${baseKey}-save`}
+              disabled={editingUpdated[addingRowEditId] === false}
+            >
+              Save
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                addItem();
+                handleEditDone(addingRowEditId);
+              }}
+              key={`${baseKey}-cancel`}
+            >
+              Cancel
+            </button>
+          </td>
+        </tr>
+      );
+    }
+    return null;
+  };
+
   const getTableHead = () => (
     <thead>
       <tr>
@@ -130,6 +192,7 @@ const Table = ({ data, schema, updateItem, deleteItem }) => {
 
   const getTableBody = () => (
     <tbody>
+      {getAddingRow()}
       {data.map(getRow)}
     </tbody>
   );
@@ -147,6 +210,13 @@ Table.propTypes = {
   data: PropTypes.arrayOf(() => (true)).isRequired,
   updateItem: PropTypes.func.isRequired,
   deleteItem: PropTypes.func.isRequired,
+  isAddingItem: PropTypes.bool,
+  addItem: PropTypes.func,
+};
+
+Table.defaultProps = {
+  isAddingItem: false,
+  addItem: () => {},
 };
 
 export default Table;
