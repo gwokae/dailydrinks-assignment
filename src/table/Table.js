@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { getField } from './fields';
+import { getField, getFieldValidator } from './fields';
 
 const Table = (props) => {
   const {
@@ -14,7 +14,11 @@ const Table = (props) => {
   } = props;
 
   const [editingData, setEditingData] = useState({});
-  const [editingUpdated, setEditingUpdated] = useState({});
+  const [isEditingValid, setIsEditingValid] = useState({});
+
+  const validateRow = row => (
+    schema.every(item => getFieldValidator(item.type)(item, row[item.key]))
+  );
 
   const handleEditDone = (id) => {
     const newEditingData = Object.keys(editingData).reduce((result, key) => {
@@ -46,8 +50,8 @@ const Table = (props) => {
         ...data.find(item => item.id === value),
       },
     });
-    setEditingUpdated({
-      ...editingUpdated,
+    setIsEditingValid({
+      ...isEditingValid,
       [value]: false,
     });
   };
@@ -62,7 +66,7 @@ const Table = (props) => {
           onClick={handleSave}
           value={id}
           key={`${baseKey}-save`}
-          disabled={editingUpdated[id] === false}
+          disabled={isEditingValid[id] === false}
         >
           Save
         </button>,
@@ -84,23 +88,25 @@ const Table = (props) => {
   };
 
   const handleFieldChange = ({ target: { value, name, dataset: { id } } }) => {
-    setEditingUpdated({
-      ...editingUpdated,
-      [id]: true,
-    });
+    const newData = {
+      ...editingData[id],
+      [name]: value,
+    };
     setEditingData({
       ...editingData,
-      [id]: {
-        ...editingData[id],
-        [name]: value,
-      },
+      [id]: newData,
+    });
+
+    setIsEditingValid({
+      ...isEditingValid,
+      [id]: validateRow(newData),
     });
   };
 
-  const getCell = (item, key) => {
+  const getCell = (type, item, key) => {
     const { id } = item;
     if (editingData[id]) {
-      const Component = getField('text');
+      const Component = getField(type);
       return (
         <Component
           value={editingData[id][key]}
@@ -118,8 +124,8 @@ const Table = (props) => {
 
     return (
       <tr key={id}>
-        {schema.map(({ key }) => (
-          <td key={`${baseKey}${key}`}>{getCell(item, key)}</td>
+        {schema.map(({ key, type }) => (
+          <td key={`${baseKey}${key}`}>{getCell(type, item, key)}</td>
         ))}
         <td>
           {getActions(id)}
@@ -137,8 +143,8 @@ const Table = (props) => {
         return result;
       }, { id: addingRowEditId }),
     });
-    setEditingUpdated({
-      ...editingUpdated,
+    setIsEditingValid({
+      ...isEditingValid,
       [addingRowEditId]: false,
     });
   }
@@ -160,7 +166,7 @@ const Table = (props) => {
                 handleEditDone(addingRowEditId);
               }}
               key={`${baseKey}-save`}
-              disabled={editingUpdated[addingRowEditId] === false}
+              disabled={isEditingValid[addingRowEditId] === false}
             >
               Save
             </button>

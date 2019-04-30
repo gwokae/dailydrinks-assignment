@@ -23,3 +23,8 @@ Text.defaultProps = {
   value: '',
 };
 export default Text;
+
+export const TextValidator = (schema, value) => {
+  if (schema.optional !== true && (!value || value === '')) return false;
+  return true;
+};
