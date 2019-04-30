@@ -1,6 +1,6 @@
 import TextField, { TextValidator } from './text';
 import NumberField, { NumberValidator } from './number';
-// import TextareaField from './textarea';
+import TextareaField, { TextareaValidator } from './textarea';
 
 let fields = {
   text: {
@@ -12,8 +12,8 @@ let fields = {
     validator: NumberValidator,
   },
   textarea: {
-    renderer: TextField,
-    validator: TextValidator,
+    renderer: TextareaField,
+    validator: TextareaValidator,
   },
 };
 

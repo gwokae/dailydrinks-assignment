@@ -28,6 +28,7 @@ const initSchema = [
     label: 'Notes',
     type: 'textarea',
     optional: true,
+    rows: 2,
   },
 ];
 

@@ -32,7 +32,7 @@ Open the file `dist/index.html` in your browser
 * [X] generic table
 * [X] text fields
 * [X] number fields
-* [ ] textarea fields
+* [X] textarea fields
 * [X] inline editable fields
 * [ ] sorable fields
 * [ ] styles
