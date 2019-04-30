@@ -1,6 +1,25 @@
-import FieldBase from './FieldBase';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class Text extends FieldBase {
+const Text = (props) => {
+  const {
+    value,
+    name,
+    onChange,
+    id,
+  } = props;
 
-}
+  return (<input type="text" value={value} name={name} onChange={onChange} data-id={id} />);
+};
+
+Text.propTypes = {
+  value: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+Text.defaultProps = {
+  value: '',
+};
 export default Text;

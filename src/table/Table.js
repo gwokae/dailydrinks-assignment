@@ -1,75 +1,52 @@
-import React from 'react';
+import React, { useState } from 'react';
 // import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { getField } from './fields';
 
-class Table extends React.Component {
-  static propTypes = {
-    schema: PropTypes.objectOf(() => (true)).isRequired,
-    data: PropTypes.arrayOf(() => (true)).isRequired,
-    updateData: PropTypes.func.isRequired,
-  }
+const Table = ({ data, schema, updateData }) => {
+  const [editingData, setEditingData] = useState({});
+  const [editingUpdated, setEditingUpdated] = useState({});
 
-  constructor(props) {
-    super(props);
+  const handleEditDone = (id) => {
+    const newEditingData = Object.keys(editingData).reduce((result, key) => {
+      if (key !== id) {
+        Object.assign(result, { [key]: editingData[key] });
+      }
+      return result;
+    }, {});
+    setEditingData(newEditingData);
+  };
 
-    this.state = {
-      editingData: {},
-      editingUpdated: {},
-    };
+  const handleSave = ({ target: { value } }) => {
+    updateData(editingData[value]);
+    handleEditDone(value);
+  };
 
-    this.handleSave = this.handleSave.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-  }
+  const handleCancel = ({ target: { value } }) => {
+    handleEditDone(value);
+  };
 
-  getTableHead() {
-    const { schema } = this.props;
-    return (
-      <thead>
-        <tr>
-          {schema.map(({ key, label = key }) => (<th key={key}>{label}</th>))}
-          <th>Actions</th>
-        </tr>
-      </thead>
-    );
-  }
+  const handleEdit = ({ target: { value } }) => {
+    setEditingData({
+      ...editingData,
+      [value]: {
+        ...data.find(item => item.id === value),
+      },
+    });
+    setEditingUpdated({
+      ...editingUpdated,
+      [value]: false,
+    });
+  };
 
-  getTableBody() {
-    const { data } = this.props;
-    return (
-      <tbody>
-        {data.map(item => (this.getTableItem(item)))}
-      </tbody>
-    );
-  }
-
-  getTableItem(data) {
-    const { schema } = this.props;
-    const { id } = data;
-    const baseKey = `data-${id}-`;
-
-    return (
-      <tr key={id}>
-        {schema.map(({ key }) => (
-          <td key={`${baseKey}${key}`}>{this.getTableItemCell(data, key)}</td>
-        ))}
-        <td>
-          {this.getActions(data)}
-        </td>
-      </tr>
-    );
-  }
-
-  getActions({ id }) {
-    const { editingData, editingUpdated } = this.state;
+  const getActions = (id) => {
     const baseKey = `data-${id}-actions-`;
     const actions = [];
     if (editingData[id]) {
       actions.push(
         <button
           type="button"
-          onClick={this.handleSave}
+          onClick={handleSave}
           value={id}
           key={`${baseKey}-save`}
           disabled={editingUpdated[id] === false}
@@ -78,7 +55,7 @@ class Table extends React.Component {
         </button>,
         <button
           type="button"
-          onClick={this.handleCancel}
+          onClick={handleCancel}
           value={id}
           key={`${baseKey}-cancel`}
         >
@@ -86,88 +63,85 @@ class Table extends React.Component {
         </button>,
       );
     } else {
-      actions.push(<button type="button" onClick={this.handleEdit} value={id} key={`${baseKey}-edit`}>Edit</button>);
+      actions.push(<button type="button" onClick={handleEdit} value={id} key={`${baseKey}-edit`}>Edit</button>);
     }
     // actions.push(<button type="button" onClick={} key={`${baseKey}-delete`}>Delete</button>);
 
     return actions;
-  }
+  };
 
-  getTableItemCell(data, key) {
-    const { id } = data;
-    const { editingData, editingUpdated } = this.state;
+  const handleFieldChange = ({ target: { value, name, dataset: { id } } }) => {
+    setEditingUpdated({
+      ...editingUpdated,
+      [id]: true,
+    });
+    setEditingData({
+      ...editingData,
+      [id]: {
+        ...editingData[id],
+        [name]: value,
+      },
+    });
+  };
+
+  const getCell = (item, key) => {
+    const { id } = item;
     if (editingData[id]) {
       const Component = getField('text');
       return (
         <Component
           value={editingData[id][key]}
           name={key}
-          onChange={({ target: { value, name } }) => this.setState({
-            editingUpdated: {
-              ...editingUpdated,
-              [id]: true,
-            },
-            editingData: {
-              ...editingData,
-              [id]: {
-                ...editingData[id],
-                [name]: value,
-              },
-            },
-          })}
+          id={id}
+          onChange={handleFieldChange}
         />
       );
     }
-    return data[key];
-  }
+    return item[key];
+  };
+  const getRow = (item) => {
+    const { id } = item;
+    const baseKey = `data-${id}-`;
 
-  handleEditDone(id) {
-    const { editingData } = this.state;
-    const newEditingData = Object.keys(editingData).reduce((result, key) => {
-      if (key !== id) {
-        Object.assign(result, { [key]: editingData[key] });
-      }
-      return result;
-    }, {});
-    this.setState({ editingData: newEditingData });
-  }
-
-  handleSave({ target: { value } }) {
-    const { updateData } = this.props;
-    const { editingData } = this.state;
-    updateData(editingData[value]);
-    this.handleEditDone(value);
-  }
-
-  handleCancel({ target: { value } }) {
-    this.handleEditDone(value);
-  }
-
-  handleEdit({ target: { value } }) {
-    const { editingData, editingUpdated } = this.state;
-    const { data } = this.props;
-    this.setState({
-      editingData: {
-        ...editingData,
-        [value]: {
-          ...data.find(item => item.id === value),
-        },
-      },
-      editingUpdated: {
-        ...editingUpdated,
-        [value]: false,
-      },
-    });
-  }
-
-  render() {
     return (
-      <table>
-        { this.getTableHead() }
-        { this.getTableBody() }
-      </table>
+      <tr key={id}>
+        {schema.map(({ key }) => (
+          <td key={`${baseKey}${key}`}>{getCell(item, key)}</td>
+        ))}
+        <td>
+          {getActions(id)}
+        </td>
+      </tr>
     );
-  }
-}
+  };
+
+  const getTableHead = () => (
+    <thead>
+      <tr>
+        {schema.map(({ key, label = key }) => (<th key={key}>{label}</th>))}
+        <th>Actions</th>
+      </tr>
+    </thead>
+  );
+
+  const getTableBody = () => (
+    <tbody>
+      {data.map(getRow)}
+    </tbody>
+  );
+
+  return (
+    <table>
+      {getTableHead()}
+      {getTableBody()}
+    </table>
+  );
+};
+
+Table.propTypes = {
+  schema: PropTypes.arrayOf(() => (true)).isRequired,
+  data: PropTypes.arrayOf(() => (true)).isRequired,
+  updateData: PropTypes.func.isRequired,
+};
 
 export default Table;
