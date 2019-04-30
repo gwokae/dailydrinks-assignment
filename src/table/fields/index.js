@@ -1,6 +1,6 @@
 import TextField, { TextValidator } from './text';
 import NumberField, { NumberValidator } from './number';
-import TextareaField, { TextareaValidator } from './textarea';
+import TextareaField, { TextareaDisplayRenderer, TextareaValidator } from './textarea';
 
 let fields = {
   text: {
@@ -14,6 +14,7 @@ let fields = {
   textarea: {
     renderer: TextareaField,
     validator: TextareaValidator,
+    displayRenderer: TextareaDisplayRenderer,
   },
 };
 
@@ -23,5 +24,9 @@ export const addFields = (type, renderer, validator) => {
     [type]: { renderer, validator },
   };
 };
-export const getField = type => (fields[type].renderer);
+export const FIELD_STATE = {
+  EDIT: 'renderer',
+  DISPLAY: 'displayRenderer',
+};
+export const getField = (type, state = FIELD_STATE.EDIT) => (fields[type][state]);
 export const getFieldValidator = type => (fields[type].validator);

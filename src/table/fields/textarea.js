@@ -45,3 +45,13 @@ export const TextareaValidator = (schema, value) => {
   if (schema.optional !== true && (!value || value === '')) return false;
   return true;
 };
+
+export const TextareaDisplayRenderer = ({ value }) => (<pre>{value}</pre>);
+
+TextareaDisplayRenderer.propTypes = {
+  value: PropTypes.string,
+};
+
+TextareaDisplayRenderer.defaultProps = {
+  value: '',
+};

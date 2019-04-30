@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 // import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { getField, getFieldValidator } from './fields';
+import { getField, getFieldValidator, FIELD_STATE } from './fields';
 
 const Table = (props) => {
   const {
@@ -118,7 +118,9 @@ const Table = (props) => {
         />
       );
     }
-    return item[key];
+    const Component = getField(type, FIELD_STATE.DISPLAY);
+    const value = item[key];
+    return Component ? <Component value={value} /> : value;
   };
   const getRow = (item) => {
     const { id } = item;
