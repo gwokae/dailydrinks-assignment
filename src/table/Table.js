@@ -103,7 +103,8 @@ const Table = (props) => {
     });
   };
 
-  const getCell = (type, item, key) => {
+  const getCell = (schemaItem, item) => {
+    const { type, key } = schemaItem;
     const { id } = item;
     if (editingData[id]) {
       const Component = getField(type);
@@ -113,6 +114,7 @@ const Table = (props) => {
           name={key}
           id={id}
           onChange={handleFieldChange}
+          schema={schema}
         />
       );
     }
@@ -124,8 +126,8 @@ const Table = (props) => {
 
     return (
       <tr key={id}>
-        {schema.map(({ key, type }) => (
-          <td key={`${baseKey}${key}`}>{getCell(type, item, key)}</td>
+        {schema.map(schemaItem => (
+          <td key={`${baseKey}${schemaItem.key}`}>{getCell(schemaItem, item)}</td>
         ))}
         <td>
           {getActions(id)}

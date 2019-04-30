@@ -1,5 +1,5 @@
 import TextField, { TextValidator } from './text';
-// import NumberField from './number';
+import NumberField, { NumberValidator } from './number';
 // import TextareaField from './textarea';
 
 let fields = {
@@ -8,8 +8,8 @@ let fields = {
     validator: TextValidator,
   },
   number: {
-    renderer: TextField,
-    validator: TextValidator,
+    renderer: NumberField,
+    validator: NumberValidator,
   },
   textarea: {
     renderer: TextField,

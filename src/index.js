@@ -16,7 +16,13 @@ const initData = [
 
 const initSchema = [
   { key: 'name', label: 'Name', type: 'text' },
-  { key: 'price', label: 'Price', type: 'number' },
+  {
+    key: 'price',
+    label: 'Price',
+    type: 'number',
+    min: 0,
+    step: 1,
+  },
   {
     key: 'notes',
     label: 'Notes',
