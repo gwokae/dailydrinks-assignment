@@ -1,7 +1,7 @@
 
 # dailydrinks-assignment
 
-A simple react based table
+A simple react based table. Tested on Chrome and Firefox. (Sorry I don't have Safari at home)
 
 ## Features
 
