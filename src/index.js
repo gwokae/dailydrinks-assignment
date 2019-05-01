@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import uuid from 'uuid/v4';
 
 import Table from './table/Table';
+import 'normalize.css';
 import './styles.scss';
 
 const initData = [
@@ -59,14 +60,15 @@ const App = () => {
   return (
     <>
       <h1>dailydrinks-assignment</h1>
-      <h2>Orders:</h2>
-      <button
-        type="button"
-        disabled={isAddingItem}
-        onClick={() => setIsAddingItem(true)}
-      >
-        Add order
-      </button>
+      <div className="table-buttons">
+        <button
+          type="button"
+          disabled={isAddingItem}
+          onClick={() => setIsAddingItem(true)}
+        >
+          Add order
+        </button>
+      </div>
       <Table
         schema={schema}
         data={tableData}

@@ -1,16 +1,74 @@
-$primary-color: white;
-$bg: black;
+$primary-color: #f5f5f5;
 body {
   color: $primary-color;
-  background-color: $bg;
+  background: linear-gradient(90deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+  font-family: sans-serif;
 }
 
+h1 {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+button {
+  padding: .3rem .8em;
+  background: $primary-color;
+  min-width: 60px;
+  border: 1px solid #333;
+  border-radius: 3px;
+  margin-right: .3rem;
+}
+
+.table-buttons {
+  float: right;
+  margin: 0.3em;
+}
+
+$table-background: $primary-color;
+$table-background-highligted: rgba(232,232,232, 0.8);
 table {
+  table-layout: fixed;
+  padding: 0.6em 1em;
   width: 100%;
+  background: $table-background;
+  color: #333;
+  border-radius: 0.5em;
+  border-collapse: collapse;
+  thead tr {
+    height: 2.6em;
+    background: darken($table-background-highligted, 20%);
+
+  }
+  tbody {
+    tr {
+      height: 3.6em;
+      vertical-align: top;
+      &:nth-child(even) {
+        background: $table-background-highligted;
+      }
+      &:hover {
+        background: darken($table-background-highligted, 10%);
+      }
+    }
+    td {
+      text-align: center;
+    }
+  }
+}
+
+pre {
+  white-space: pre-wrap;
 }
 
 .sortable {
   cursor: pointer;
+  text-decoration: underline;
+  &:after {
+    display: inline-block;
+    width: 1em;
+    text-align: center;
+    color: black;
+  }
   &.sort-asc:after {
     content: "↓"
   }
