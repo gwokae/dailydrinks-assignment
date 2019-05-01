@@ -4,3 +4,17 @@ body {
   color: $primary-color;
   background-color: $bg;
 }
+
+table {
+  width: 100%;
+}
+
+.sortable {
+  cursor: pointer;
+  &.sort-asc:after {
+    content: "↓"
+  }
+  &.sort-desc:after {
+    content: "↑"
+  }
+}

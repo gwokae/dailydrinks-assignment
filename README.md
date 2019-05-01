@@ -34,7 +34,7 @@ Open the file `dist/index.html` in your browser
 * [X] number fields
 * [X] textarea fields
 * [X] inline editable fields
-* [ ] sorable fields
+* [X] sorable fields
 * [ ] styles
 
 ## Author

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { resolveCompare } from '../utils';
 
 const NUMBER_ATTRIBUTES = ['min', 'max', 'step'];
 const Number = (props) => {
@@ -45,3 +46,11 @@ export const NumberValidator = (schema, value) => {
   if (schema.optional !== true && (!value || value === '')) return false;
   return true;
 };
+
+export const NumberComparator = (key, order) => (
+  (a, b) => {
+    let [base, compareTo] = resolveCompare(order, a, b);
+
+    return Number(base[key]) - Number(compareTo[key]);
+  }
+);

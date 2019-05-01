@@ -1,32 +1,49 @@
-import TextField, { TextValidator } from './text';
-import NumberField, { NumberValidator } from './number';
-import TextareaField, { TextareaDisplayRenderer, TextareaValidator } from './textarea';
+import TextField from './text';
+import NumberField from './number';
+import TextareaField, { TextareaDisplayRenderer } from './textarea';
+import { resolveCompare } from '../utils';
 
-let fields = {
-  text: {
-    renderer: TextField,
-    validator: TextValidator,
-  },
-  number: {
-    renderer: NumberField,
-    validator: NumberValidator,
-  },
-  textarea: {
-    renderer: TextareaField,
-    validator: TextareaValidator,
-    displayRenderer: TextareaDisplayRenderer,
-  },
+export const defaultValidator = (schema, value) => {
+  if (schema.optional !== true && (!value || value === '')) return false;
+  return true;
 };
 
-export const addFields = (type, renderer, validator) => {
+export const defaultComparator = (key, order) => (
+  (a, b) => {
+    const [base, compareTo] = resolveCompare(order, a, b);
+    return base[key].toString().localeCompare(compareTo[key].toString());
+  }
+);
+
+let fields = {};
+
+export const addFields = (type, props) => {
+  const {
+    renderer,
+    displayRenderer,
+    validator = defaultValidator,
+    comparator = defaultComparator,
+  } = props;
+
   fields = {
     ...fields,
-    [type]: { renderer, validator },
+    [type]: {
+      renderer,
+      displayRenderer,
+      validator,
+      comparator,
+    },
   };
 };
-export const FIELD_STATE = {
+
+addFields('text', { renderer: TextField });
+addFields('number', { renderer: NumberField });
+addFields('textarea', { renderer: TextareaField, displayRenderer: TextareaDisplayRenderer });
+
+export const RETURN_TYPES = {
   EDIT: 'renderer',
   DISPLAY: 'displayRenderer',
+  VALIDATOR: 'validator',
+  COMPARATOR: 'comparator',
 };
-export const getField = (type, state = FIELD_STATE.EDIT) => (fields[type][state]);
-export const getFieldValidator = type => (fields[type].validator);
+export const getField = (type, state = RETURN_TYPES.EDIT) => (fields[type][state]);

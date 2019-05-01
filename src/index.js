@@ -8,18 +8,38 @@ import './styles.scss';
 const initData = [
   {
     id: uuid(),
-    name: 'John Doe',
-    price: 123,
-    notes: 'Hello World',
+    name: 'Bubble tea',
+    price: 145,
+    notes: `test
+
+    multi lines
+`
+    ,
+  },
+  {
+    id: uuid(),
+    name: 'Apple juice',
+    price: 50,
+  },
+  {
+    id: uuid(),
+    name: 'Coffee',
+    price: 80,
   },
 ];
 
 const initSchema = [
-  { key: 'name', label: 'Name', type: 'text' },
+  {
+    key: 'name',
+    label: 'Name',
+    type: 'text',
+    sortable: true,
+  },
   {
     key: 'price',
     label: 'Price',
     type: 'number',
+    sortable: true,
     min: 0,
     step: 1,
   },

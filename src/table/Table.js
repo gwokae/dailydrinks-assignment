@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-// import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import { getField, getFieldValidator, FIELD_STATE } from './fields';
+import { getField, RETURN_TYPES } from './fields';
+import { SORT_ORDER } from './utils';
 
 const Table = (props) => {
   const {
@@ -15,9 +15,37 @@ const Table = (props) => {
 
   const [editingData, setEditingData] = useState({});
   const [isEditingValid, setIsEditingValid] = useState({});
+  const [sortField, setSortField] = useState();
+  const [sortOrder, setSortOrder] = useState();
+
+  const toggleSort = ({ target: { dataset: { key } } }) => {
+    if (key === sortField) {
+      switch (sortOrder) {
+        case SORT_ORDER.ASC:
+          setSortOrder(SORT_ORDER.DESC);
+          break;
+        case SORT_ORDER.DESC:
+          setSortField();
+          break;
+        default:
+          setSortOrder(SORT_ORDER.ASC);
+      }
+    } else {
+      setSortField(key);
+      setSortOrder(SORT_ORDER.ASC);
+    }
+  };
+
+  const getComparator = () => {
+    if (sortField) {
+      const { key, type } = schema.find(item => item.key === sortField);
+      return getField(type, RETURN_TYPES.COMPARATOR)(key, sortOrder);
+    }
+    return () => (0);
+  };
 
   const validateRow = row => (
-    schema.every(item => getFieldValidator(item.type)(item, row[item.key]))
+    schema.every(item => getField(item.type, RETURN_TYPES.VALIDATOR)(item, row[item.key]))
   );
 
   const handleEditDone = (id) => {
@@ -118,7 +146,7 @@ const Table = (props) => {
         />
       );
     }
-    const Component = getField(type, FIELD_STATE.DISPLAY);
+    const Component = getField(type, RETURN_TYPES.DISPLAY);
     const value = item[key];
     return Component ? <Component value={value} /> : value;
   };
@@ -194,18 +222,38 @@ const Table = (props) => {
   const getTableHead = () => (
     <thead>
       <tr>
-        {schema.map(({ key, label = key }) => (<th key={key}>{label}</th>))}
+        {
+          schema.map(({ key, label = key, sortable = false }) => {
+            const attributes = {};
+            if (sortable) {
+              if (key === sortField) {
+                attributes.className = `sortable sort-${sortOrder}`;
+              } else {
+                attributes.className = 'sortable';
+              }
+              attributes.onClick = toggleSort;
+            }
+            return (
+              <th key={key} data-key={key} {...attributes}>
+                {label}
+              </th>
+            );
+          })
+        }
         <th>Actions</th>
       </tr>
     </thead>
   );
 
-  const getTableBody = () => (
-    <tbody>
-      {getAddingRow()}
-      {data.map(getRow)}
-    </tbody>
-  );
+  const getTableBody = () => {
+    const comparator = getComparator();
+    return (
+      <tbody>
+        {getAddingRow()}
+        {[...data].sort(comparator).map(getRow)}
+      </tbody>
+    );
+  };
 
   return (
     <table>
