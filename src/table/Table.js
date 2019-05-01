@@ -95,6 +95,7 @@ const Table = (props) => {
           value={id}
           key={`${baseKey}-save`}
           disabled={isEditingValid[id] === false}
+          data-icon="💾"
         >
           Save
         </button>,
@@ -103,14 +104,15 @@ const Table = (props) => {
           onClick={handleCancel}
           value={id}
           key={`${baseKey}-cancel`}
+          data-icon="🧹"
         >
           Cancel
         </button>,
       );
     } else {
-      actions.push(<button type="button" onClick={handleEdit} value={id} key={`${baseKey}-edit`}>Edit</button>);
+      actions.push(<button type="button" onClick={handleEdit} value={id} key={`${baseKey}-edit`} data-icon="✏">Edit</button>);
     }
-    actions.push(<button type="button" onClick={handleDelete} value={id} key={`${baseKey}-delete`}>Delete</button>);
+    actions.push(<button type="button" onClick={handleDelete} value={id} key={`${baseKey}-delete`} data-icon="🗑">Delete</button>);
 
     return actions;
   };
@@ -199,6 +201,7 @@ const Table = (props) => {
               }}
               key={`${baseKey}-save`}
               disabled={isEditingValid[addingRowEditId] === false}
+              data-icon="💾"
             >
               Save
             </button>
@@ -209,6 +212,7 @@ const Table = (props) => {
                 handleEditDone(addingRowEditId);
               }}
               key={`${baseKey}-cancel`}
+              data-icon="🧹"
             >
               Cancel
             </button>

@@ -65,6 +65,7 @@ const App = () => {
           type="button"
           disabled={isAddingItem}
           onClick={() => setIsAddingItem(true)}
+          data-icon="➕"
         >
           Add order
         </button>
