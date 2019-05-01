@@ -100,7 +100,7 @@ const App = () => {
     </>
   );
 };
-ReactDOM.render(
-  <App />,
-  document.getElementById('app'),
-);
+
+const div = document.createElement('div');
+document.body.appendChild(div);
+ReactDOM.render(<App />, div);

@@ -49,7 +49,7 @@ export const NumberValidator = (schema, value) => {
 
 export const NumberComparator = (key, order) => (
   (a, b) => {
-    let [base, compareTo] = resolveCompare(order, a, b);
+    const [base, compareTo] = resolveCompare(order, a, b);
 
     return Number(base[key]) - Number(compareTo[key]);
   }
