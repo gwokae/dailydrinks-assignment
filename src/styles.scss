@@ -62,12 +62,15 @@ table {
     }
     td {
       text-align: center;
+      padding-top: 0.8em;
     }
   }
 }
 
 pre {
   white-space: pre-wrap;
+  margin: 0;
+  font-family: sans-serif;
 }
 
 .sortable {
@@ -85,4 +88,19 @@ pre {
   &.sort-desc:after {
     content: "↑"
   }
+}
+$input-background: rgba(255,255,255,0.3);
+input {
+  background: $input-background;
+  border: 0;
+  border-bottom: 1px solid #000;
+  margin-top: 1.2em;
+  width: 90%;
+}
+
+textarea {
+  background: $input-background;
+  width: 90%;
+  border-color: #000;
+  resize: none;
 }
