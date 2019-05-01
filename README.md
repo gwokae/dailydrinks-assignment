@@ -3,6 +3,12 @@
 
 A simple react based table
 
+## Features
+
+* general table component (basic CRUD)
+* ability to add customize field type
+* sortable
+
 ## Building and running on localhost
 
 First install dependencies:
@@ -27,7 +33,7 @@ npm run build-prod
 
 Open the file `dist/index.html` in your browser
 
-## Features
+## TODOs
 
 * [X] generic table
 * [X] text fields
@@ -35,7 +41,7 @@ Open the file `dist/index.html` in your browser
 * [X] textarea fields
 * [X] inline editable fields
 * [X] sorable fields
-* [ ] styles
+* [X] styles
 
 ## Author
 

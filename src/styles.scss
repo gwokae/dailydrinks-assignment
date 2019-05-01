@@ -104,3 +104,11 @@ textarea {
   border-color: #000;
   resize: none;
 }
+
+footer {
+  margin: 1em 0;
+  text-align: right;
+  a {
+    color: $primary-color;
+  }
+}

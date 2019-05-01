@@ -93,6 +93,7 @@ const App = () => {
           if (item) setTableData([{ ...item, id: uuid() }, ...tableData]);
         }}
       />
+      <footer>Author: <a href="mailto:gwokae@gmail.com">Leonard Lin</a></footer>
     </>
   );
 };
