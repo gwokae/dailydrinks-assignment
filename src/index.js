@@ -11,7 +11,7 @@ const initData = [
     id: uuid(),
     name: 'Bubble tea',
     price: 145,
-    notes: `tLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut est urna, congue vel augue in, lobortis lobortis mi. Nunc posuere, urna nec aliquet tristique, elit tortor tempus orci, ut faucibus neque felis et massa. Suspendisse at placerat velit, vitae lobortis nibh. Phasellus tempus turpis augue, non lacinia libero scelerisque a. Praesent odio erat, varius sit amet nulla a, semper sollicitudin dolor. Sed pellentesque luctus dui, nec facilisis libero placerat ut. Vivamus ultrices finibus eleifend. Sed porta id justo in eleifend. Nunc nec tempor risus. Vestibulum ac posuere quam. Sed ornare accumsan metus vitae mollis.
+    notes: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut est urna, congue vel augue in, lobortis lobortis mi. Nunc posuere, urna nec aliquet tristique, elit tortor tempus orci, ut faucibus neque felis et massa. Suspendisse at placerat velit, vitae lobortis nibh. Phasellus tempus turpis augue, non lacinia libero scelerisque a. Praesent odio erat, varius sit amet nulla a, semper sollicitudin dolor. Sed pellentesque luctus dui, nec facilisis libero placerat ut. Vivamus ultrices finibus eleifend. Sed porta id justo in eleifend. Nunc nec tempor risus. Vestibulum ac posuere quam. Sed ornare accumsan metus vitae mollis.
 
 Morbi ut sem sagittis, pretium leo et, egestas urna. Cras cursus tellus id dolor convallis sollicitudin. Sed ligula dui, vulputate sit amet ultricies vitae, volutpat sit amet odio. Cras porttitor rhoncus odio eu fermentum. Aenean leo nunc, aliquam ac lobortis iaculis, rutrum sed leo. Nunc sem elit, mollis sit amet ante quis, viverra faucibus enim. In a ligula velit. Nulla eget ultrices arcu. Nam hendrerit, lacus pretium vestibulum volutpat, mi ligula pulvinar lacus, et ultricies arcu urna at odio. Nam turpis tortor, molestie eget mollis a, malesuada eget nisi. Integer id interdum tortor, sit amet eleifend lectus. Nulla at lacinia velit, gravida aliquam sem.
 
@@ -93,7 +93,10 @@ const App = () => {
           if (item) setTableData([{ ...item, id: uuid() }, ...tableData]);
         }}
       />
-      <footer>Author: <a href="mailto:gwokae@gmail.com">Leonard Lin</a></footer>
+      <footer>
+        Author:
+        <a href="mailto:gwokae@gmail.com">Leonard Lin</a>
+      </footer>
     </>
   );
 };

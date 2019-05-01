@@ -47,7 +47,6 @@ table {
   thead tr {
     height: 2.6em;
     background: darken($table-background-highligted, 20%);
-
   }
   tbody {
     tr {
@@ -110,5 +109,48 @@ footer {
   text-align: right;
   a {
     color: $primary-color;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  table {
+    display: block;
+    thead tr {
+      background: transparent;
+      &:before {
+        content: "Sorting:";
+        display: inline-block;
+        padding-right: 0.6em;
+      }
+      th {
+        display: inline-block;
+        margin-left: 0.6em;
+        &:not(.sortable) {
+          display: none;
+        }
+      }
+    }
+    tbody {
+      display: flex;
+      flex-direction: column;
+      tr {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+        td {
+          text-align: left;
+          display: block;
+          &:before {
+            content: attr(data-label);
+            font-weight: bold;
+            display: inline-block;
+            margin-right: 0.3em;
+          }
+          &.actions {
+            order: -1;
+          }
+        }
+      }
+    }
   }
 }

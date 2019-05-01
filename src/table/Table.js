@@ -159,9 +159,14 @@ const Table = (props) => {
     return (
       <tr key={id}>
         {schema.map(schemaItem => (
-          <td key={`${baseKey}${schemaItem.key}`}>{getCell(schemaItem, item)}</td>
+          <td
+            key={`${baseKey}${schemaItem.key}`}
+            data-label={schemaItem.label || schemaItem.key}
+          >
+            {getCell(schemaItem, item)}
+          </td>
         ))}
-        <td>
+        <td className="actions">
           {getActions(id)}
         </td>
       </tr>
@@ -190,7 +195,9 @@ const Table = (props) => {
       return (
         <tr key={baseKey}>
           {schema.map(schemaItem => (
-            <td key={`${baseKey}-${schemaItem.key}`}>{getCell(schemaItem, item)}</td>
+            <td key={`${baseKey}-${schemaItem.key}`} data-label={schemaItem.label || schemaItem.key}>
+              {getCell(schemaItem, item)}
+            </td>
           ))}
           <td>
             <button

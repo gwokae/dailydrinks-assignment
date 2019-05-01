@@ -8,6 +8,7 @@ A simple react based table
 * general table component (basic CRUD)
 * ability to add customize field type
 * sortable
+* Simple RWD (only collapse when viewport width under 768px)
 
 ## Building and running on localhost
 
